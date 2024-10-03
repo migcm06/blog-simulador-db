@@ -56,8 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['titulo']) && isset($_P
     <ul>
         <?php
         if (!empty($posts)) {
+            $posts_hecho_por_usuario = array_filter($posts, function($post) use ($username) {
+                return $post['autor'] == $username;
+            });
+
             // Mostrar los posts almacenados
-            foreach ($posts as $post) {
+            if (!empty($posts_hecho_por_usuario)) {
+                foreach ($posts_hecho_por_usuario as $post) {
                 echo "<li>";
                 echo "<h3>" . htmlspecialchars($post['titulo']) . "</h3>";
                 echo "<p>" . htmlspecialchars($post['contenido']) . "</p>";
@@ -67,6 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['titulo']) && isset($_P
         } else {
             echo "<p>No hay posts aún.</p>";
         }
+        }
+            
         ?>
     </ul>
 
